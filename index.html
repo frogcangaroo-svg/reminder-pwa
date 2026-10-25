@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>予定リマインダー</title>
+  <meta name="theme-color" content="#2b2118">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="リマインダー">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <h1>予定リマインダー</h1>
+    <button id="settingsButton" class="icon-button" type="button" aria-label="設定">⚙</button>
+  </header>
+
+  <main>
+    <!-- 初回設定（合言葉の入力） -->
+    <section id="settings" class="card" hidden>
+      <h2>設定</h2>
+      <p class="note">GASの <code>sendApiTokenToOwner</code> を実行すると、LINEに合言葉が届きます。それをコピーして貼り付けてください。</p>
+      <label for="tokenInput">合言葉</label>
+      <input id="tokenInput" type="password" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button id="saveTokenButton" class="primary" type="button">保存</button>
+    </section>
+
+    <!-- 予定の入力 -->
+    <section id="formCard" class="card">
+      <h2>予定を登録</h2>
+      <form id="reminderForm">
+        <label for="datetimeInput">日時</label>
+        <input id="datetimeInput" type="datetime-local" required>
+
+        <label for="titleInput">タイトル</label>
+        <input id="titleInput" type="text" maxlength="100" required>
+
+        <label for="detailInput">詳細</label>
+        <textarea id="detailInput" rows="4" maxlength="2000"></textarea>
+
+        <fieldset>
+          <legend>送信先</legend>
+          <div id="recipientList" class="recipients"><p class="note">読み込み中…</p></div>
+        </fieldset>
+
+        <p class="note">予定の5分前にLINEで通知します。</p>
+        <button id="submitButton" class="primary" type="submit">登録する</button>
+      </form>
+    </section>
+
+    <!-- 予定の一覧 -->
+    <section class="card">
+      <div class="card-title">
+        <h2>予定一覧</h2>
+        <button id="reloadButton" class="icon-button" type="button" aria-label="再読み込み">↻</button>
+      </div>
+      <ul id="reminderList" class="reminders"></ul>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
