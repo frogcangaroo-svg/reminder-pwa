@@ -131,7 +131,9 @@ function renderReminders(reminders) {
   }
 
   const statusClass = { '未送信': 'status-pending', '送信済み': 'status-sent', 'エラー': 'status-error' };
-  reminders.forEach((r) => {
+  // 日時の新しい順（'yyyy-MM-ddTHH:mm' は文字列のまま比べられる）
+  const sorted = [...reminders].sort((a, b) => b.datetime.localeCompare(a.datetime));
+  sorted.forEach((r) => {
     const li = document.createElement('li');
 
     const head = document.createElement('div');
